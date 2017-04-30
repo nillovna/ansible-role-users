@@ -9,7 +9,7 @@ Playbook should be run with admin rights.
 
 # Example
 
-*Variables*
+**Variables**
 
 ```
 system_users:
@@ -17,7 +17,7 @@ system_users:
     - { name: 'morty_smith', sudo: no, home: '/var/tmp/morty', key: 'ssh-rsa AAA123', shell: '/bin/sh' }
 ```
 
-*Playbook*
+**Playbook**
 
 ```
 - hosts: all
@@ -32,4 +32,4 @@ ansible 2.0.2.0 and higher
 
 ## Other
 
-Tested on ansible 2.0.2.0, vagrant debian and ubuntu.
+Tested on ansible 2.0.2.0, vagrant debian and ubuntu

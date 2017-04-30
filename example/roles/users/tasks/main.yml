@@ -1,0 +1,45 @@
+---
+
+- name: install sudo
+  apt: name=sudo 
+       state=present
+  tags:
+    - sudo
+    - install
+
+- name: create wheel group
+  group: name=wheel 
+         state=present
+  tags:
+    - sudo
+    - users
+    
+- name: put wheel-nopsswd file
+  template: src=wheel-nopasswd 
+            dest=/etc/sudoers.d/wheel-nopasswd 
+            owner=root 
+            group=root 
+            mode=0440
+  tags:
+    - sudo
+    - users
+
+- name: create users
+  user: name={{ item.name }} 
+        shell={{ item.shell }} 
+        state=present 
+        groups={{ 'wheel' if item.sudo else '' }}
+        home={{ item.home }}
+        append=yes
+  with_items:
+    - "{{ system_users }}"
+  tags:
+    - users
+
+- name: put puplic ssh keys for users
+  authorized_key: user={{ item.name }} 
+                  key="{{ item.key }}"
+  with_items:
+    - "{{ system_users }}"
+  tags:
+    - users
