@@ -1,0 +1,3 @@
+[submodule "example/roles/vagrant"]
+	path = example/roles/vagrant
+	url = https://github.com/gitinsky/ansible-role-vagrant.git

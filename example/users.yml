@@ -1,0 +1,4 @@
+- hosts: vagrant
+  become: yes
+  roles:
+    - users

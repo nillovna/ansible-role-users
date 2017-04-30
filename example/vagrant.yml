@@ -1,0 +1,10 @@
+- hosts: vagrant
+  become: yes
+  roles:
+    - vagrant
+  tasks:
+      
+    - name: set password for $USER
+      user: name="{{ lookup('env', 'USER') }}" shell=/bin/bash groups=wheel append=yes password="{{ lookup('env', 'USER') }}"
+      tags: vagrant
+

@@ -1,0 +1,46 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+defaultbox = "debian/jessie64"
+box = ENV['BOX'] || defaultbox
+
+ENV['ANSIBLE_ROLES_PATH'] = "../../"
+
+Vagrant.configure("2") do |config|
+ 
+  config.vm.box = box
+
+  config.vm.define "usertest" do |usertest_cfg|
+    usertest_cfg.vm.hostname = "usertest.vagrant"
+    usertest_cfg.vm.network "private_network", type: "dhcp"
+    usertest_cfg.vm.provider :virtualbox do |v|
+      v.name = "usertest"
+    end
+  end
+
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "vagrant.yml"
+    ansible.sudo = true
+    ansible.groups = {
+      "vagrant" => ["usertest"],
+    }
+    ansible.extra_vars = {
+      ansible_ssh_user: 'vagrant',
+      hbase_standalone:   true,
+    }
+  end
+  
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "users.yml"
+    ansible.sudo = true
+    ansible.groups = {
+      "vagrant" => ["usertest"],
+    }
+    ansible.extra_vars = {
+      ansible_ssh_user: 'vagrant',
+      hbase_standalone:   true,
+    }
+  end
+
+
+end
